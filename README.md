@@ -1,6 +1,6 @@
 # LPS_Logical_and_Review_Code
 
-Please refer to Program.cs and folder Class for more detail.
+**Please refer to Program.cs and folder Class for more detail and you can run the console also.**
 
 **A.1** The "If" statement is correct to check null. but it can be stated a little better to use NULL coalescing operators instead of if statement for cleaner and easier to read code.
 example :
@@ -45,4 +45,28 @@ public void Dispose()
   Dispose(true); 
   GC.SuppressFinalize(this); 
 } 
+```
+
+**A.6** This code creates a TreeNode object as the root node of a tree structure. The program then repeatedly creates new subtrees of 10,000 nodes and adds them as children of the root node. However, the program never removes the old subtrees, so it continues using up memory.
+
+To fix this issue, modify the TreeNode class to expose the child nodes as public property, then create a RemoveChildAt method:
+```
+// remove the old subtrees to free up memory 
+if (rootNode.Children.Count > 10)
+{
+  rootNode.RemoveChildAt(0);
+}
+```
+
+**A.7** Improper caching can cause memory leaks in a C# program because objects that are cached and no longer needed can remain in memory.
+To solve those memory leaks, you must implement the cache needs in a way that allows for the lifespan of cached objects to be managed. You can use a cache that automatically removes objects after a certain period or when the cache becomes too large.
+```
+// remove the old subtrees to free up memory 
+CachedItem item = _cache[key];
+if (item.Expiration < DateTime.Now)
+{
+  _cache.Remove(key);
+  return null;
+}
+return item.Value;
 ```
